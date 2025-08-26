@@ -1,12 +1,11 @@
 using System.Diagnostics;
-using Cinema.DataAccess;
-using Cinema.Models;
-using Cinema.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cinema.Controllers
+namespace Cinema.Areas.Customer.Controllers
 {
+
+    [Area(SD.CustomerArea)]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

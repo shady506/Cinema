@@ -17,4 +17,10 @@
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <Folder Include="Areas\Identity\Controllers\" />
+	  <Folder Include="Areas\Chat\Controllers\" />
+	</ItemGroup>
+
 </Project>
