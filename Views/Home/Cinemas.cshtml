@@ -1,0 +1,16 @@
+﻿@model List<Cinemas>
+
+<div class="container mt-4">
+    <h3>📂 Cinemas</h3>
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+            <li class="list-group-item">
+                <a asp-controller="Home" asp-action="@item.Movies" asp-route-id="@item.Id"
+                   class="text-decoration-none">
+                    @item.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,21 @@
+﻿@model Actors
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- صورة الممثل -->
+        <div class="col-md-4 text-center">
+            <img src="~/images/cast/@Model.ProfilePicture"
+                 class="rounded-circle shadow-lg"
+                 alt="@Model.FirstName @Model.LastName"
+                 style="width:250px; height:250px; object-fit:cover;">
+            <h3 class="mt-3">@Model.FirstName @Model.LastName</h3>
+        </div>
+
+        <!-- تفاصيل الممثل -->
+        <div class="col-md-8">
+            <h4>👤 About</h4>
+            <p style="font-size: 1.1rem; line-height:1.6;">
+                @Model.Bio
+            </p>
+        </div>
+    </div>
