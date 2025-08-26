@@ -1,14 +1,18 @@
-﻿@model List<Movies>
+﻿@model List<Actors>
 
+@{
+
+    const int quantity = 10;
+}
 
 
 <div class="container">
     <div class="row mb-3 align-items-center my-3">
         <div class="col-md-6">
-            <h2 class="display-6">All Movies</h2>
+            <h2 class="display-6">All Actors</h2>
         </div>
         <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
-            <a href="/Admin/Movies/Create" class="btn btn-success">Create</a>
+            <a href="/Admin/Actors/Create" class="btn btn-success">Create</a>
         </div>
     </div>
 
@@ -19,14 +23,9 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Start Date</th>
-                        <th scope="col">End Date</th>
-                        <th scope="col">Category Name</th>
-                        <th scope="col">Cinema Name</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Bio</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,26 +34,25 @@
                     {
                         <tr>
                             <th scope="row">@item.Id</th>
-                            <td>@item.Name</td>
-                            @if (item.Description is not null && item.Description.Length > 50)
+                            <td>@item.FirstName</td>
+                            <td>@item.LastName</td>
+
+                            @if (item.Bio is not null && item.Bio.Length > 50)
                             {
-                                <td>@item.Description.Substring(0, 30)...</td>
+                                <td>@item.Bio.Substring(0, 30)...</td>
                             }
                             else
                             {
-                                <td>@item.Description</td>
+                                <td>@item.Bio</td>
                             }
-                            <td>@item.Price.ToString("c")</td>
-                            <td>@item.StartDate.ToShortDateString()</td>
-                            <td>@item.EndDate.ToShortDateString()</td>
-                            <td>@item.Category.Name</td>
-                            <td>@item.Cinema.Name</td>
+
                             <td>
-                                <a href="/Admin/Movies/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
-                                <a href="/Admin/Movies/Delete/@item.Id"
+                                <a href="/Admin/Actors/Edit/@item.Id" type="button" class="btn btn-warning">Edit</a>
+                                <a href="/Admin/Actors/Delete/@item.Id"
                                    class="btn btn-danger btn-delete"
                                    data-id="">Delete</a>
                             </td>
+
                         </tr>
                     }
 
@@ -90,7 +88,7 @@
                         fetch(url, { method: 'POST' })
                             .then(res => res.json())
                             .then(data => {
-                                Swal.fire("Deleted!", "Category has been deleted.", "success")
+                                Swal.fire("Deleted!", "product has been deleted.", "success")
                                     .then(() => location.reload());
                             });
                         */
