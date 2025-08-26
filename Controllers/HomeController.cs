@@ -25,7 +25,7 @@ namespace Cinema.Controllers
 
 
         
-        public IActionResult Index(FilteredMovies filteredMovies,int page = 1)
+        public IActionResult Index(FilteredMoviesVM filteredMovies,int page = 1)
         {
             var Movies = _context.Movies.Include(e=>e.Cinema).Include(e=>e.Category).AsQueryable();
             if (filteredMovies.MovieName is not null)
@@ -52,18 +52,26 @@ namespace Cinema.Controllers
 
             return View(movie);
         }
-        public IActionResult ActorDetails(int Id)
+        public IActionResult ActorDetails(FilteredMoviesVM filteredMovies)
         {
-            var actor = _context.Actors.Include(e=>e.Movies).FirstOrDefault(e => e.Id == Id);
+            var actor = _context.Actors.Include(e => e.Movies).FirstOrDefault(e => e.Id == filteredMovies.Id);
+
             if (actor is null)
                 return NotFound();
 
+            var relatedMovies = actor.Movies.ToList();
+
+            ViewBag.RelatedMovies = relatedMovies;
+
             return View(actor);
-             
         }
         public IActionResult Categories(int Id)
         {
-            var Categories = _context.Categories.AsQueryable();
+            var Categories = _context.Categories.Include(e=>e.Movies).AsQueryable();
+
+            var relatedCategories = Categories.Include(e=>e.Movies).ToList();
+            ViewBag.RelatedCategories = relatedCategories;
+
             return View(Categories.ToList());
         }
         public IActionResult Cinemas(int Id)
