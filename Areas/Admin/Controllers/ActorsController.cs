@@ -28,6 +28,7 @@ namespace Cinema.Areas.Admin.Controllers
 
             _context.Actors.Add(Actor);
             _context.SaveChanges();
+            TempData["success-notification"] = "Add Actor Successfully";
             return RedirectToAction(nameof(Index),"Actors");
         }
         [HttpGet]
@@ -48,7 +49,7 @@ namespace Cinema.Areas.Admin.Controllers
           
             _context.Actors.Update(Actor);
             _context.SaveChanges();
-            
+            TempData["success-notification"] = "Update Actor Successfully";
             return RedirectToAction(nameof(Index));
         }
 
@@ -62,7 +63,7 @@ namespace Cinema.Areas.Admin.Controllers
 
             _context.Actors.Remove(Actor);
             _context.SaveChanges();
-
+            TempData["success-notification"] = "Delete Actor Successfully";
             return RedirectToAction(nameof(Index));
         }
 

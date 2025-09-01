@@ -6,28 +6,22 @@
         <div class="col-12">
             <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
-                    <label for="FirstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="FirstName" name="FirstName">
+                    <label for="Name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="Name" name="Name">
                     <span class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="LastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="LastName" name="LastName">
-                    <span class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label for="Bio" class="form-label">Bio</label>
+                    <label for="Description" class="form-label">Description</label>
                     <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a Bio here" id="Bio" style="height: 100px" name="Bio"></textarea>
-                        <label for="Bio">You Bio Here...</label>
+                        <textarea class="form-control" placeholder="Leave a Description here" id="Description" style="height: 100px" name="Description"></textarea>
+                        <label for="Description">You Description Here...</label>
                     </div>
                     <span class="text-danger"></span>
                 </div>
-
                 <div class="mb-3">
-                    <label for="ProfilePicture" class="form-label">Profile Picture</label>
-                    <input type="file" class="form-control" id="MainImg" name="ProfilePicture" accept="image/*" onchange="previewImage(event)">
-                    <img id="preview" src="#" alt="Image Preview" class="img-thumbnail mt-2" style="max-width: 200px; display: none;" />
+                    <label for="Address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="Address" name="Address">
+                    <span class="text-danger"></span>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -36,21 +30,5 @@
     </div>
 </div>
 
-<script>
-    function previewImage(event) {
-        const input = event.target;
-        const preview = document.getElementById("preview");
 
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                preview.src = e.target.result;
-                preview.style.display = "block";
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-</script>
 

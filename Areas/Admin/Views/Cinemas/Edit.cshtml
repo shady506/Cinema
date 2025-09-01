@@ -16,12 +16,12 @@
                         <textarea class="form-control" placeholder="Leave a Description here" id="Description" style="height: 100px" name="Description">@Model.Description</textarea>
                         <label for="description">You Bio Here...</label>
                     </div>
-                  <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a Address here" id="Address" style="height: 100px" name="Description">@Model.Address</textarea>
-                        <label for="Address">You Address Here...</label>
+                    <div class="mb-3">
+                        <label for="Address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="Address" name="Address" value="@Model.Address">
+                        <span class="text-danger"></span>
                     </div>
-                    <span class="text-danger"></span>
-                </div>
+
 
              
 

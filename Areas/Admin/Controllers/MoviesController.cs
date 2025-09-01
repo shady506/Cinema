@@ -48,6 +48,7 @@ namespace Cinema.Areas.Admin.Controllers
                 Movie.ImgUrl = fileName;
                 _context.Movies.Add(Movie);
                 _context.SaveChanges();
+                TempData["success-notification"] = "Add Movie Successfully";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -106,6 +107,7 @@ namespace Cinema.Areas.Admin.Controllers
 
             _context.Movies.Update(movie);
             _context.SaveChanges();
+            TempData["success-notification"] = "Update Movie Successfully";
             return RedirectToAction(nameof(Index));
         }
 
@@ -126,6 +128,8 @@ namespace Cinema.Areas.Admin.Controllers
             }
             _context.Movies.Remove(movie);
             _context.SaveChanges();
+
+             TempData["success-notification"] = "Delete Movie Successfully";
             return RedirectToAction(nameof(Index));
         }
     }

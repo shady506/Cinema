@@ -28,6 +28,7 @@ namespace Cinema.Areas.Admin.Controllers
 
             _context.Cinemas.Add(cinema);
             _context.SaveChanges();
+            TempData["success-notification"] = "Add Cinema Successfully";
             return RedirectToAction(nameof(Index),"Cinemas");
         }
         [HttpGet]
@@ -48,7 +49,7 @@ namespace Cinema.Areas.Admin.Controllers
           
             _context.Cinemas.Update(cinema);
             _context.SaveChanges();
-            
+            TempData["success-notification"] = "Update Cinema Successfully";
             return RedirectToAction(nameof(Index));
         }
 
@@ -62,7 +63,7 @@ namespace Cinema.Areas.Admin.Controllers
 
             _context.Cinemas.Remove(cinema);
             _context.SaveChanges();
-
+            TempData["success-notification"] = "Delete Cinema Successfully";
             return RedirectToAction(nameof(Index));
         }
 
