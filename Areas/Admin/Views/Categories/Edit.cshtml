@@ -8,10 +8,14 @@
                     @* <input type="hidden"  value="@Model.Id"/> *@
                     <label for="name" class="form-label">Name</label>
                     <input type="text" class="form-control" id="name" name="Name" value="@Model.Name">
-                    <span class="text-danger"></span>
+                    <span class="text-danger" asp-validation-for="@Model.Name"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
 </div>
+@section Scripts
+{
+    <partial name="_NotificationPartial.cshtml" />
+}

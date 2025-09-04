@@ -1,4 +1,4 @@
-﻿@model CategoriesWithCinemasVM
+﻿@model Actors
 
 
 <div class="container">
@@ -8,12 +8,12 @@
                 <div class="mb-3">
                     <label for="FirstName" class="form-label">First Name</label>
                     <input type="text" class="form-control" id="FirstName" name="FirstName">
-                    <span class="text-danger"></span>
+                    <span class="text-danger" asp-validation-for="@Model.FirstName"></span>
                 </div>
                 <div class="mb-3">
                     <label for="LastName" class="form-label">Last Name</label>
                     <input type="text" class="form-control" id="LastName" name="LastName">
-                    <span class="text-danger"></span>
+                    <span class="text-danger" asp-validation-for="@Model.LastName"></span>
                 </div>
                 <div class="mb-3">
                     <label for="Bio" class="form-label">Bio</label>
@@ -53,4 +53,9 @@
         }
     }
 </script>
+
+@section Scripts
+{
+    <partial name="_NotificationPartial.cshtml" />
+}
 

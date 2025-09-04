@@ -25,6 +25,13 @@ namespace Cinema.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Cinemas cinema)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(e => e.Errors);
+                TempData["error-Notification"] = string.Join(" , ", errors.Select(e => e.ErrorMessage));
+
+                return View(cinema);
+            }
 
             _context.Cinemas.Add(cinema);
             _context.SaveChanges();
@@ -46,7 +53,13 @@ namespace Cinema.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(Cinemas cinema)
         {
-          
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(e => e.Errors);
+                TempData["error-Notification"] = string.Join(" , ", errors.Select(e => e.ErrorMessage));
+
+                return View(cinema);
+            }
             _context.Cinemas.Update(cinema);
             _context.SaveChanges();
             TempData["success-notification"] = "Update Cinema Successfully";

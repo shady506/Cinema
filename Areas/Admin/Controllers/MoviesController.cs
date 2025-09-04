@@ -1,4 +1,5 @@
 ﻿using Cinema.Models;
+using Cinema.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,23 +20,37 @@ namespace Cinema.Areas.Admin.Controllers
 
 
 
-
         [HttpGet]
         public IActionResult Create()
         {
+            
             var categories = _context.Categories;
             var Cinemas= _context.Cinemas;
 
             CategoriesWithCinemasVM CategoriesWithCinemasVM = new()
             {
+                Movie=new Movies(),
                 Categories = categories.ToList(),
-                Cinemas= Cinemas.ToList(),
-            };
+                Cinemas = Cinemas.ToList(),
+            }; 
             return View(CategoriesWithCinemasVM);
         }
         [HttpPost]
-        public IActionResult Create(Movies Movie,IFormFile ImgUrl)
+        public IActionResult Create(CategoriesWithCinemasVM CategoriesWithCinemasVM, IFormFile ImgUrl)
         {
+           
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(e => e.Errors);
+                TempData["error-Notification"] = string.Join(" , ", errors.Select(e => e.ErrorMessage));
+
+                CategoriesWithCinemasVM.Categories = _context.Categories.ToList();
+                CategoriesWithCinemasVM.Cinemas = _context.Cinemas.ToList();
+
+
+
+                return View(CategoriesWithCinemasVM);
+            }
             if (ImgUrl is not null && ImgUrl.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImgUrl.FileName);
@@ -45,9 +60,10 @@ namespace Cinema.Areas.Admin.Controllers
                 {
                     ImgUrl.CopyTo(stream);
                 }
-                Movie.ImgUrl = fileName;
-                _context.Movies.Add(Movie);
+                CategoriesWithCinemasVM.Movie.ImgUrl = fileName;
+                _context.Movies.Add(CategoriesWithCinemasVM.Movie);
                 _context.SaveChanges();
+
                 TempData["success-notification"] = "Add Movie Successfully";
                 return RedirectToAction(nameof(Index));
             }
@@ -64,50 +80,73 @@ namespace Cinema.Areas.Admin.Controllers
             var categories = _context.Categories;
             var Cinemas = _context.Cinemas;
 
+            if (movie is null)
+                return RedirectToAction(SD.NotFoundPage, SD.HomeController);
+
             CategoriesWithCinemasVM CategoriesWithCinemasVM = new()
             {
                 Movie = movie,
                 Categories = categories.ToList(),
                 Cinemas = Cinemas.ToList(),
             };
-            if (movie is null)
-                return RedirectToAction(SD.NotFoundPage, SD.HomeController);
+        
 
             return View(CategoriesWithCinemasVM);
         }
+
         [HttpPost]
-        public IActionResult Edit(Movies movie, IFormFile? ImgUrl)
+        
+        public IActionResult Edit(CategoriesWithCinemasVM vm, IFormFile? ImgUrl)
         {
-            var MovieDb = _context.Movies.AsNoTracking().FirstOrDefault(e => e.Id == movie.Id);
-            if (MovieDb is null)
-                return BadRequest();
-            if (ImgUrl is not null && ImgUrl.Length > 0)
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(e => e.Errors);
+                TempData["error-Notification"] = string.Join(" , ", errors.Select(e => e.ErrorMessage));
+
+                vm.Categories = _context.Categories.ToList();
+                vm.Cinemas = _context.Cinemas.ToList();
+
+                return View(vm);
+            }
+
+            var movieDb = _context.Movies.FirstOrDefault(e => e.Id == vm.Movie.Id);
+            if (movieDb is null)
+                return NotFound();
+
+         
+            movieDb.Name = vm.Movie.Name;
+            movieDb.Description = vm.Movie.Description;
+            movieDb.Price = vm.Movie.Price;
+            movieDb.StartDate = vm.Movie.StartDate;
+            movieDb.EndDate = vm.Movie.EndDate;
+            movieDb.CategoryId = vm.Movie.CategoryId;
+            movieDb.CinemaId = vm.Movie.CinemaId;
+
+          
+            if (ImgUrl != null && ImgUrl.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ImgUrl.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
 
                 using (var stream = System.IO.File.Create(filePath))
                 {
                     ImgUrl.CopyTo(stream);
                 }
 
-                var OldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", MovieDb.ImgUrl);
-
-                if (System.IO.File.Exists(OldFilePath))
+                if (!string.IsNullOrEmpty(movieDb.ImgUrl))
                 {
-                    System.IO.File.Delete(OldFilePath);
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", movieDb.ImgUrl);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
                 }
 
-                movie.ImgUrl = fileName;
-            }
-            else
-            {
-                movie.ImgUrl = MovieDb.ImgUrl;
+                movieDb.ImgUrl = fileName;
             }
 
-            _context.Movies.Update(movie);
             _context.SaveChanges();
-            TempData["success-notification"] = "Update Movie Successfully";
+            TempData["success-notification"] = "Movie updated successfully.";
             return RedirectToAction(nameof(Index));
         }
 

@@ -7,61 +7,54 @@
             <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="Name">
-                    <span class="text-danger"></span>
+                    <input asp-for="Movie.Name" class="form-control" />
+                    <span asp-validation-for="Movie.Name" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a description here" id="description" style="height: 100px" name="Description"></textarea>
+                        <textarea asp-for="Movie.Description" class="form-control"></textarea>
+                        <span asp-validation-for="Movie.Description" class="text-danger"></span>
                         <label for="description">You Description Here...</label>
                     </div>
-                    <span class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label for="ImgUrl" class="form-label">Movie Image</label>
                     <input type="file" class="form-control" id="ImgUrl" name="ImgUrl" accept="image/*" onchange="previewImage(event)">
-                    <img id="preview" src="#" alt="Image Preview" class="img-thumbnail mt-2" style="max-width: 200px; display: none;" />
+                    <img id="preview"
+                         src="@(Model.Movie?.ImgUrl != null ? Url.Content("~/images/movies/" + Model.Movie.ImgUrl) : "#")"
+                         alt="Image Preview"
+                         class="img-thumbnail mt-2"
+                         style="max-width: 200px; @(Model.Movie?.ImgUrl != null ? "" : "display:none;")" />
                 </div>
 
                 <div class="mb-3">
                     <label for="Price" class="form-label">Price</label>
-                    <input type="number" class="form-control" id="Price" name="Price">
+                    <input asp-for="Movie.Price" class="form-control" />
+                    <span asp-validation-for="Movie.Price" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label for="Price" class="form-label">StartDate</label>
-                    <input type="datetime-local" class="form-control" id="StartDate" name="StartDate">
+                    <input asp-for="Movie.StartDate" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="Movie.StartDate" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label for="Price" class="form-label">EndDate</label>
-                    <input type="datetime-local" class="form-control" id="EndDate" name="EndDate">
+                    <input asp-for="Movie.EndDate" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="Movie.EndDate" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
                     <label for="CategoryId" class="form-label">Category Name</label>
-                    <select class="form-select" name="CategoryId">
-                        @foreach (var item in Model.Categories)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
-
-                    </select>
-                    <span class="text-danger"></span>
+                    <select asp-for="Movie.CategoryId" class="form-select" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))"></select>
                 </div>
 
                 <div class="mb-3">
                     <label for="CinemaId" class="form-label">Cineama Name</label>
-                    <select class="form-select" name="CinemaId">
-                        @foreach (var item in Model.Cinemas)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
-
-                    </select>
-                    <span class="text-danger"></span>
+                    <select asp-for="Movie.CinemaId" class="form-select" asp-items="@(new SelectList(Model.Cinemas, "Id", "Name"))"></select>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -69,21 +62,16 @@
     </div>
 </div>
 
+
 <script>
     function previewImage(event) {
-        const input = event.target;
-        const preview = document.getElementById("preview");
-
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                preview.src = e.target.result;
-                preview.style.display = "block";
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }
+        var preview = document.getElementById('preview');
+        preview.src = URL.createObjectURL(event.target.files[0]);
+        preview.style.display = "block";
     }
 </script>
 
+@section Scripts
+{
+    <partial name="_NotificationPartial.cshtml" />
+}

@@ -25,6 +25,13 @@ namespace Cinema.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Categories category)
         {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(e => e.Errors);
+                TempData["error-Notification"] = string.Join(" , ", errors.Select(e => e.ErrorMessage));
+
+                return View(category);
+            }
 
             _context.Categories.Add(category);
             _context.SaveChanges();
@@ -34,7 +41,8 @@ namespace Cinema.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Edit(int Id)
         {
-            var category = _context.Categories.FirstOrDefault(e => e.Id ==Id);
+           
+                var category = _context.Categories.FirstOrDefault(e => e.Id ==Id);
 
             if (category is null)
                 return RedirectToAction(SD.NotFoundPage,SD.HomeController);
@@ -46,7 +54,13 @@ namespace Cinema.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(Categories category)
         {
-          
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(e => e.Errors);
+                TempData["error-Notification"] = string.Join(" , ", errors.Select(e => e.ErrorMessage));
+
+                return View(category);
+            }
             _context.Categories.Update(category);
             _context.SaveChanges();
             TempData["success-notification"] = "Update Category Successfully";
