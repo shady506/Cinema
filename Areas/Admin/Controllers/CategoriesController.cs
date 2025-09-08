@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Cinema.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Cinema.Areas.Admin.Controllers
 {
@@ -6,13 +8,18 @@ namespace Cinema.Areas.Admin.Controllers
 
     public class CategoriesController : Controller
     {
-        private ApplicationDbContext _context = new();
+        //private ApplicationDbContext _context = new();
+        private IRepository<Categories> _categoryRepository; //= new Repository<Categories>(); 
 
-        public IActionResult Index()
+        public CategoriesController(IRepository<Categories> categoryRepository)
         {
-            var Categories = _context.Categories;
+            _categoryRepository = categoryRepository;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var Categories = await _categoryRepository.GetAsync();
 
-            return View(Categories.ToList());
+            return View(Categories);
         }
 
         [HttpGet]
@@ -23,7 +30,7 @@ namespace Cinema.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Categories category)
+        public async Task<IActionResult> Create(Categories category)
         {
             if (!ModelState.IsValid)
             {
@@ -33,16 +40,17 @@ namespace Cinema.Areas.Admin.Controllers
                 return View(category);
             }
 
-            _context.Categories.Add(category);
-            _context.SaveChanges();
+            await _categoryRepository.CreateAsync(category);
+            await _categoryRepository.CommitAsync();
+
             TempData["success-notification"] = "Add Category Successfully";
             return RedirectToAction(nameof(Index),"Categories");
         }
         [HttpGet]
-        public IActionResult Edit(int Id)
+        public async Task<IActionResult> Edit(int Id)
         {
            
-                var category = _context.Categories.FirstOrDefault(e => e.Id ==Id);
+                var category = await _categoryRepository.GetOne(e => e.Id ==Id);
 
             if (category is null)
                 return RedirectToAction(SD.NotFoundPage,SD.HomeController);
@@ -52,7 +60,7 @@ namespace Cinema.Areas.Admin.Controllers
             return View(category);
         }
         [HttpPost]
-        public IActionResult Edit(Categories category)
+        public async Task<IActionResult> Edit(Categories category)
         {
             if (!ModelState.IsValid)
             {
@@ -61,22 +69,24 @@ namespace Cinema.Areas.Admin.Controllers
 
                 return View(category);
             }
-            _context.Categories.Update(category);
-            _context.SaveChanges();
+            _categoryRepository.Edit(category);
+            await _categoryRepository.CommitAsync();
+
             TempData["success-notification"] = "Update Category Successfully";
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Delete (int Id)
+        public async Task<IActionResult> Delete (int Id)
         {
-            var category = _context.Categories.FirstOrDefault(e => e.Id == Id);
+            var category = await _categoryRepository.GetOne(e => e.Id == Id);
 
             if (category is null)
                 return RedirectToAction(SD.NotFoundPage, SD.HomeController);
 
 
-            _context.Categories.Remove(category);
-            _context.SaveChanges();
+            _categoryRepository.Delete(category);    
+            await _categoryRepository.CommitAsync();
+
             TempData["success-notification"] = "Delete Category Successfully";
             return RedirectToAction(nameof(Index));
         }

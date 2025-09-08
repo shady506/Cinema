@@ -2,41 +2,61 @@
 using Cinema.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Cinema.Areas.Admin.Controllers
 {
     [Area(SD.AdminArea)]
     public class MoviesController : Controller
     {
-        private ApplicationDbContext _context = new();
+        //private ApplicationDbContext _context = new();
 
+        // private Repository<Movies> _movierepository =new();
+        private IMovieRepository _movieRepository = new MovieRepository();
+        private IRepository<Actors> _actorRepository = new Repository<Actors>();
+        private IRepository<Categories> _categoryRepository = new Repository<Categories>();
+        private IRepository<Cinemas> _cinemaRepository = new Repository<Cinemas>();
 
-        public IActionResult Index()
+        public MoviesController(IMovieRepository movieRepository ,
+            IRepository<Actors> actorRepository
+            , IRepository<Categories> categoryRepository
+            , IRepository<Cinemas> cinemaRepository)
+
         {
-            var Movies = _context.Movies.Include(e=>e.Category).Include(e=>e.Cinema);
-            return View(Movies.ToList());
+            _movieRepository = movieRepository;
+            _actorRepository = actorRepository;
+            _categoryRepository = categoryRepository;
+            _cinemaRepository = cinemaRepository;
+        }
+
+
+
+        public async Task<IActionResult> Index()
+        {
+            var Movies = await _movieRepository.GetAsync(includes: [e=>e.Category , e=>e.Cinema]);
+            return View(Movies);
         }
 
 
 
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             
-            var categories = _context.Categories;
-            var Cinemas= _context.Cinemas;
+            var categories = await _categoryRepository.GetAsync();
+            var Cinemas = await _cinemaRepository.GetAsync();
 
             CategoriesWithCinemasVM CategoriesWithCinemasVM = new()
             {
                 Movie=new Movies(),
-                Categories = categories.ToList(),
-                Cinemas = Cinemas.ToList(),
+                Categories = categories,
+                Cinemas = Cinemas,
             }; 
             return View(CategoriesWithCinemasVM);
         }
         [HttpPost]
-        public IActionResult Create(CategoriesWithCinemasVM CategoriesWithCinemasVM, IFormFile ImgUrl)
+        public async Task<IActionResult> Create(CategoriesWithCinemasVM CategoriesWithCinemasVM, IFormFile ImgUrl)
         {
            
             if (!ModelState.IsValid)
@@ -44,8 +64,8 @@ namespace Cinema.Areas.Admin.Controllers
                 var errors = ModelState.Values.SelectMany(e => e.Errors);
                 TempData["error-Notification"] = string.Join(" , ", errors.Select(e => e.ErrorMessage));
 
-                CategoriesWithCinemasVM.Categories = _context.Categories.ToList();
-                CategoriesWithCinemasVM.Cinemas = _context.Cinemas.ToList();
+                CategoriesWithCinemasVM.Categories = await _categoryRepository.GetAsync();
+                CategoriesWithCinemasVM.Cinemas = await _cinemaRepository.GetAsync();
 
 
 
@@ -61,8 +81,9 @@ namespace Cinema.Areas.Admin.Controllers
                     ImgUrl.CopyTo(stream);
                 }
                 CategoriesWithCinemasVM.Movie.ImgUrl = fileName;
-                _context.Movies.Add(CategoriesWithCinemasVM.Movie);
-                _context.SaveChanges();
+
+                await _movieRepository.CreateAsync(CategoriesWithCinemasVM.Movie);
+                await _movieRepository.CommitAsync();
 
                 TempData["success-notification"] = "Add Movie Successfully";
                 return RedirectToAction(nameof(Index));
@@ -73,12 +94,12 @@ namespace Cinema.Areas.Admin.Controllers
 
 
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var movie = _context.Movies.FirstOrDefault(e => e.Id == id);
+            var movie = await _movieRepository.GetOne(e => e.Id == id);
 
-            var categories = _context.Categories;
-            var Cinemas = _context.Cinemas;
+            var categories = await _categoryRepository.GetAsync();
+            var Cinemas = await _cinemaRepository.GetAsync();
 
             if (movie is null)
                 return RedirectToAction(SD.NotFoundPage, SD.HomeController);
@@ -86,8 +107,8 @@ namespace Cinema.Areas.Admin.Controllers
             CategoriesWithCinemasVM CategoriesWithCinemasVM = new()
             {
                 Movie = movie,
-                Categories = categories.ToList(),
-                Cinemas = Cinemas.ToList(),
+                Categories = categories,
+                Cinemas = Cinemas,
             };
         
 
@@ -96,20 +117,20 @@ namespace Cinema.Areas.Admin.Controllers
 
         [HttpPost]
         
-        public IActionResult Edit(CategoriesWithCinemasVM vm, IFormFile? ImgUrl)
+        public async Task<IActionResult> Edit(CategoriesWithCinemasVM vm, IFormFile? ImgUrl)
         {
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(e => e.Errors);
                 TempData["error-Notification"] = string.Join(" , ", errors.Select(e => e.ErrorMessage));
 
-                vm.Categories = _context.Categories.ToList();
-                vm.Cinemas = _context.Cinemas.ToList();
+                vm.Categories = await _categoryRepository.GetAsync();
+                vm.Cinemas = await _cinemaRepository.GetAsync();
 
                 return View(vm);
             }
 
-            var movieDb = _context.Movies.FirstOrDefault(e => e.Id == vm.Movie.Id);
+            var movieDb = await _movieRepository.GetOne(e => e.Id == vm.Movie.Id);
             if (movieDb is null)
                 return NotFound();
 
@@ -144,17 +165,18 @@ namespace Cinema.Areas.Admin.Controllers
 
                 movieDb.ImgUrl = fileName;
             }
+            
+            await _movieRepository.CommitAsync();
 
-            _context.SaveChanges();
             TempData["success-notification"] = "Movie updated successfully.";
             return RedirectToAction(nameof(Index));
         }
 
 
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var movie = _context.Movies.FirstOrDefault(e => e.Id == id);
+            var movie = await _movieRepository.GetOne(e => e.Id == id);
 
             if (movie is null)
                 return RedirectToAction(SD.NotFoundPage, SD.HomeController);
@@ -165,8 +187,8 @@ namespace Cinema.Areas.Admin.Controllers
             {
                 System.IO.File.Delete(OldFilePath);
             }
-            _context.Movies.Remove(movie);
-            _context.SaveChanges();
+            _movieRepository.Delete(movie);
+            await _movieRepository.CommitAsync();
 
              TempData["success-notification"] = "Delete Movie Successfully";
             return RedirectToAction(nameof(Index));

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Cinema.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Cinema.Areas.Admin.Controllers
 {
@@ -6,13 +8,20 @@ namespace Cinema.Areas.Admin.Controllers
 
     public class ActorsController : Controller
     {
-        private ApplicationDbContext _context = new();
+        //private ApplicationDbContext _context = new();
+        private IRepository<Actors> _actorRepository; //= new Repository<Actors>() ;
 
-        public IActionResult Index()
+        public ActorsController(IRepository<Actors> actorRepository)
         {
-            var Actors = _context.Actors;
+            _actorRepository = actorRepository;
+        }
 
-            return View(Actors.ToList());
+
+        public async Task<IActionResult> Index()
+        {
+            var Actors = await _actorRepository.GetAsync();
+
+            return View(Actors);
         }
 
         [HttpGet]
@@ -23,7 +32,7 @@ namespace Cinema.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Actors Actor)
+        public async Task<IActionResult> Create(Actors Actor)
         {
 
             if (!ModelState.IsValid)
@@ -34,15 +43,16 @@ namespace Cinema.Areas.Admin.Controllers
                 return View(Actor);
             }
 
-            _context.Actors.Add(Actor);
-            _context.SaveChanges();
+            await _actorRepository.CreateAsync(Actor);
+            await _actorRepository.CommitAsync();
+
             TempData["success-notification"] = "Add Actor Successfully";
             return RedirectToAction(nameof(Index),"Actors");
         }
         [HttpGet]
-        public IActionResult Edit(int Id)
+        public async Task<IActionResult> Edit(int Id)
         {
-            var Actor = _context.Actors.FirstOrDefault(e => e.Id ==Id);
+            var Actor = await _actorRepository.GetOne(e => e.Id ==Id);
 
             if (Actor is null)
                 return RedirectToAction(SD.NotFoundPage,SD.HomeController);
@@ -52,7 +62,7 @@ namespace Cinema.Areas.Admin.Controllers
             return View(Actor);
         }
         [HttpPost]
-        public IActionResult Edit(Actors Actor)
+        public async Task<IActionResult> Edit(Actors Actor)
         {
 
             if (!ModelState.IsValid)
@@ -63,22 +73,23 @@ namespace Cinema.Areas.Admin.Controllers
                 return View(Actor);
             }
 
-            _context.Actors.Update(Actor);
-            _context.SaveChanges();
+            _actorRepository.Edit(Actor);
+           await _actorRepository.CommitAsync();
+
             TempData["success-notification"] = "Update Actor Successfully";
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Delete (int Id)
+        public async Task<IActionResult> Delete (int Id)
         {
-            var Actor = _context.Actors.FirstOrDefault(e => e.Id == Id);
+            var Actor = await _actorRepository.GetOne(e => e.Id == Id);
 
             if (Actor is null)
                 return RedirectToAction(SD.NotFoundPage, SD.HomeController);
 
+            _actorRepository.Delete(Actor);
+            await _actorRepository.CommitAsync();
 
-            _context.Actors.Remove(Actor);
-            _context.SaveChanges();
             TempData["success-notification"] = "Delete Actor Successfully";
             return RedirectToAction(nameof(Index));
         }
