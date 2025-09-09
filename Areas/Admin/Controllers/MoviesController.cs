@@ -12,10 +12,10 @@ namespace Cinema.Areas.Admin.Controllers
         //private ApplicationDbContext _context = new();
 
         // private Repository<Movies> _movierepository =new();
-        private IMovieRepository _movieRepository = new MovieRepository();
-        private IRepository<Actors> _actorRepository = new Repository<Actors>();
-        private IRepository<Categories> _categoryRepository = new Repository<Categories>();
-        private IRepository<Cinemas> _cinemaRepository = new Repository<Cinemas>();
+        private IMovieRepository _movieRepository;// = new MovieRepository();
+        private IRepository<Actors> _actorRepository;// = new Repository<Actors>();
+        private IRepository<Categories> _categoryRepository;// = new Repository<Categories>();
+        private IRepository<Cinemas> _cinemaRepository; //= new Repository<Cinemas>();
 
         public MoviesController(IMovieRepository movieRepository ,
             IRepository<Actors> actorRepository

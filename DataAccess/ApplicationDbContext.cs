@@ -1,11 +1,19 @@
 ﻿using Cinema.DataAccess.Enums;
 using Cinema.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema.DataAccess
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            :base(options) 
+        {
+            
+        }
+
         public DbSet<Actors> Actors { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<Movies> Movies{ get; set; }
@@ -21,6 +29,10 @@ namespace Cinema.DataAccess
         {
             base.OnModelCreating(modelBuilder);
              
+        }
+        public ApplicationDbContext()
+        {
+            
         }
     }
 }
