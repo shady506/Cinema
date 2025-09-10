@@ -10,10 +10,11 @@ namespace Cinema.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private ApplicationDbContext _context = new();
-        public HomeController(ILogger<HomeController> logger)
+        private ApplicationDbContext _context;//= new();
+        public HomeController(ILogger<HomeController> logger , ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
 

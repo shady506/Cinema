@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,8 +24,10 @@ namespace Cinema
                 option.Password.RequiredLength = 8;
                 option.Password.RequireNonAlphanumeric = false;
             })
-                .AddEntityFrameworkStores <ApplicationDbContext>();
+                .AddEntityFrameworkStores <ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             builder.Services.AddScoped<IRepository<Categories>, Repository<Categories>>();
             builder.Services.AddScoped<IRepository<Cinemas>, Repository<Cinemas>>();
