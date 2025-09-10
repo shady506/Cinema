@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cinema
@@ -15,6 +17,13 @@ namespace Cinema
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option =>
+            {
+                option.Password.RequiredLength = 8;
+                option.Password.RequireNonAlphanumeric = false;
+            })
+                .AddEntityFrameworkStores <ApplicationDbContext>();
 
 
             builder.Services.AddScoped<IRepository<Categories>, Repository<Categories>>();

@@ -1,8 +1,9 @@
-﻿@{
+﻿@model List<Movies>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-@model List<Movies>
 
 <form class="d-flex ms-auto" asp-action="Index" asp-controller="Home" method="get">
     <input class="form-control me-2" type="search" name="MovieName" placeholder="Search movies..." aria-label="Search" value="@ViewBag.Name">
@@ -100,3 +101,8 @@
 </div>
 
 
+
+@section Scripts
+{
+    <partial name="_NotificationPartial.cshtml" />
+}

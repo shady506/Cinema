@@ -2,6 +2,7 @@
 using Cinema.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Cinema.ViewModels;
 
 namespace Cinema.DataAccess
 {
@@ -34,5 +35,6 @@ namespace Cinema.DataAccess
         {
             
         }
+        public DbSet<Cinema.ViewModels.RegisterVM> RegisterVM { get; set; } = default!;
     }
 }
