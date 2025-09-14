@@ -1,4 +1,5 @@
-﻿using Cinema.ViewModels;
+﻿using Cinema.Models;
+using Cinema.ViewModels;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -68,7 +69,7 @@ namespace Cinema.Areas.Identity.Controllers
 
             TempData["success-Notification"] = "Create User Successfully , Please Confirm Your Email";
 
-            return RedirectToAction("Index", "Home", new { area = "Customer" });
+            return RedirectToAction("Login", "Account", new { area = "Identity" });
         }
 
 
@@ -142,7 +143,52 @@ namespace Cinema.Areas.Identity.Controllers
             return RedirectToAction("Index", "Home", new { area = "Customer" });
 
         }
-        
+
+        [HttpGet]
+        public IActionResult ResendEmailConfirmation()
+        {
+            return View();
+        }
+
+        [HttpPost]
+
+        public async Task<IActionResult> ResendEmailConfirmation(ResendEmailConfirmationVM resendEmailConfirmationVM)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(resendEmailConfirmationVM);
+            }
+
+            var user = await _userManager.FindByEmailAsync(resendEmailConfirmationVM.EmailOrUserName) ?? await _userManager.FindByNameAsync(resendEmailConfirmationVM.EmailOrUserName);
+
+            if (user == null)
+            {
+                TempData["error-Notification"] = "Invalid User Name Or Password";
+                return View(resendEmailConfirmationVM);
+            }
+
+            if (user.EmailConfirmed)
+            {
+                TempData["error-Notification"] = "Allready Confirmed";
+                return View(resendEmailConfirmationVM);
+            }
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var Link = Url.Action("ConfirmEmail", "Account", new
+            {
+                area = "Identity",
+                token = token,
+                userId = user.Id
+            }, Request.Scheme);
+
+            await _emailSender.SendEmailAsync(user.Email!, "Confirm Your Email!",
+                 $"<h1>Confirm Your Email By Click <a href ='{Link}'>Here</a></h1>");
+
+            TempData["success-Notification"] = "Send Email Successfully , Please Confirm Your Email";
+
+            return RedirectToAction("Index", "Home", new { area = "Customer" });
+        }
 
     }
 }

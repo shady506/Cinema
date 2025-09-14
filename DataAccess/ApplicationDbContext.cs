@@ -32,6 +32,7 @@ namespace Cinema.DataAccess
             base.OnModelCreating(modelBuilder);
              
         }
+        public DbSet<Cinema.ViewModels.ResendEmailConfirmationVM> ResendEmailConfirmationVM { get; set; } = default!;
 
         //public ApplicationDbContext()
         //{
