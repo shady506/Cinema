@@ -32,6 +32,7 @@ namespace Cinema
             builder.Services.AddScoped<IRepository<Categories>, Repository<Categories>>();
             builder.Services.AddScoped<IRepository<Cinemas>, Repository<Cinemas>>();
             builder.Services.AddScoped<IRepository<Actors>, Repository<Actors>>();
+            builder.Services.AddScoped<IRepository<UserOTP>, Repository<UserOTP>>();
             builder.Services.AddScoped<IMovieRepository, MovieRepository>();
           
 

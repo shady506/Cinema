@@ -19,6 +19,7 @@ namespace Cinema.DataAccess
         public DbSet<Categories> Categories { get; set; }
         public DbSet<Movies> Movies{ get; set; }
         public DbSet<Cinemas> Cinemas{ get; set; }
+        public DbSet<UserOTP> UserOTPs{ get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -32,7 +33,7 @@ namespace Cinema.DataAccess
             base.OnModelCreating(modelBuilder);
              
         }
-        public DbSet<Cinema.ViewModels.ResendEmailConfirmationVM> ResendEmailConfirmationVM { get; set; } = default!;
+   
 
         //public ApplicationDbContext()
         //{
