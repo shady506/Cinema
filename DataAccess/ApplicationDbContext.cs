@@ -32,6 +32,7 @@ namespace Cinema.DataAccess
             base.OnModelCreating(modelBuilder);
              
         }
+
         //public ApplicationDbContext()
         //{
             

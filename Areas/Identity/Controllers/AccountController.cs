@@ -1,7 +1,9 @@
-﻿using Mapster;
+﻿using Cinema.ViewModels;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Threading.Tasks;
 
 namespace Cinema.Areas.Identity.Controllers
@@ -11,11 +13,13 @@ namespace Cinema.Areas.Identity.Controllers
     {
         private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager , IEmailSender emailSender)
+        public AccountController(UserManager<ApplicationUser> userManager , IEmailSender emailSender , SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -23,8 +27,6 @@ namespace Cinema.Areas.Identity.Controllers
         {
             return View();
         }
-
-
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM registerVM)
         {
@@ -93,5 +95,54 @@ namespace Cinema.Areas.Identity.Controllers
 
             return RedirectToAction("Index", "Home", new { area = "Customer" });
         }
+
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginVM loginVM)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(loginVM);
+            }
+
+            var user = await _userManager.FindByEmailAsync(loginVM.EmailOrUserName) ?? await _userManager.FindByNameAsync(loginVM.EmailOrUserName);
+
+            if (user == null)
+            {
+                TempData["error-Notification"] = "Invalid User Name Or Password";
+                return View(loginVM);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user,loginVM.Password,loginVM.RememberMe,true);
+            if (!result.Succeeded)
+            {
+                if (result.IsLockedOut)
+                {
+                    TempData["error-Notification"] = "To Many Attempts";
+                }
+
+                TempData["error-Notification"] = "Invalid User Name Or Password";
+                return View(loginVM);
+
+            }
+            if (!user.EmailConfirmed)
+            {
+                TempData["error-Notification"] = "Confirm Your Email First !";
+                return View(loginVM);
+
+            }
+            TempData["success-Notification"] = "Login Successfully ";
+
+            return RedirectToAction("Index", "Home", new { area = "Customer" });
+
+        }
+        
+
     }
 }
