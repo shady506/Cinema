@@ -1,3 +1,4 @@
+using Cinema.Utility.DBInitializer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.CodeAnalysis.Options;
@@ -21,8 +22,9 @@ namespace Cinema
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(option =>
             {
-                option.Password.RequiredLength = 8;
+                option.Password.RequiredLength = 6;
                 option.Password.RequireNonAlphanumeric = false;
+                option.User.RequireUniqueEmail = true;
             })
                 .AddEntityFrameworkStores <ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -34,6 +36,7 @@ namespace Cinema
             builder.Services.AddScoped<IRepository<Actors>, Repository<Actors>>();
             builder.Services.AddScoped<IRepository<UserOTP>, Repository<UserOTP>>();
             builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+            builder.Services.AddScoped<IDBInitializer, DBInitializer>();
           
 
             var app = builder.Build();
@@ -50,6 +53,10 @@ namespace Cinema
             app.UseRouting();
 
             app.UseAuthorization();
+
+            var scope = app.Services.CreateScope();
+            var service = scope.ServiceProvider.GetService<IDBInitializer>();
+            service.Initialize();
 
             app.MapStaticAssets();
             app.MapControllerRoute(

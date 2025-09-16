@@ -58,6 +58,8 @@ namespace Cinema.Areas.Identity.Controllers
             
             }
 
+            await _userManager.AddToRoleAsync(applicationUser, SD.CustomerRole);
+
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(applicationUser);
             var Link = Url.Action("ConfirmEmail", "Account", new
             {
