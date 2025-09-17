@@ -26,8 +26,13 @@ namespace Cinema.Areas.Identity.Controllers
         }
 
         [HttpGet]
+        [UserAuthenticatedFilter]
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home", new { area = "Customer" });
+            }
             return View();
         }
         [HttpPost]
@@ -103,8 +108,10 @@ namespace Cinema.Areas.Identity.Controllers
 
 
         [HttpGet]
+        [UserAuthenticatedFilter]
         public IActionResult Login()
         {
+            
             return View();
         }
         [HttpPost]
@@ -319,6 +326,14 @@ namespace Cinema.Areas.Identity.Controllers
 
             TempData["success-Notification"] = "Change Password Successfully";
             return RedirectToAction("Login", "Account", new { area = "Identity"});
+        }
+
+
+        public async Task<IActionResult> Logout()
+        {
+           await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account", new { area = "Identity" });
+
         }
     }
 }

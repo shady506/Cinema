@@ -23,8 +23,13 @@ namespace Cinema.Areas.Customer.Controllers
 
 
 
+        public IActionResult NotFoundPage()
+        {
+            return View();
+        }
 
-        
+
+
         public IActionResult Index(FilteredMoviesVM filteredMovies,int page = 1)
         {
             var Movies = _context.Movies.Include(e=>e.Cinema).Include(e=>e.Category).AsQueryable();

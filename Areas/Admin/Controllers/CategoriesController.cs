@@ -1,11 +1,12 @@
 ﻿using Cinema.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Cinema.Areas.Admin.Controllers
 {
     [Area(SD.AdminArea)]
-
+    [Authorize(Roles = $"{SD.SuperAdminRole},{SD.AdminRole}")]
     public class CategoriesController : Controller
     {
         //private ApplicationDbContext _context = new();

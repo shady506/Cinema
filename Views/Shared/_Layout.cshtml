@@ -24,7 +24,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between flex-grow-1" >
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/">Home</a>
@@ -36,7 +36,38 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/Customer/Home/Cinemas">Cinemas</a>
                         </li>
+                        @if (User.IsInRole(SD.SuperAdminRole) || User.IsInRole(SD.AdminRole))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/Admin">Managment System</a>
+                            </li>
+                        }
+                    </ul> 
+
+                    <ul class="navbar-nav m-lg-1">
+
+                    @if ( User is not null && User.Identity.IsAuthenticated)
+                    {
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/Identity/Account/Logout">Logout</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/Identity/Profile/Index">Welcome</a>
+                            </li>
+                       
+                    }else
+                    {
+                            
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/Identity/Account/Register">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="/Identity/Account/Login">Login</a>
+                            </li>
+                    }
+                                                                             
                     </ul>
+
                 </div>
             </div>
         </nav>

@@ -29,6 +29,13 @@ namespace Cinema
                 .AddEntityFrameworkStores <ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.ConfigureApplicationCookie(option => 
+            {
+                option.LoginPath = "/Identity/Account/Login";
+                option.AccessDeniedPath = "/Customer/Home/NotFoundPage";
+            });
+             
+
             builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             builder.Services.AddScoped<IRepository<Categories>, Repository<Categories>>();
@@ -37,7 +44,11 @@ namespace Cinema
             builder.Services.AddScoped<IRepository<UserOTP>, Repository<UserOTP>>();
             builder.Services.AddScoped<IMovieRepository, MovieRepository>();
             builder.Services.AddScoped<IDBInitializer, DBInitializer>();
-          
+
+            builder.Services.AddSession(option => 
+            {
+                option.IdleTimeout = TimeSpan.FromMinutes(50);
+            });
 
             var app = builder.Build();
 
@@ -52,7 +63,10 @@ namespace Cinema
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
 
             var scope = app.Services.CreateScope();
             var service = scope.ServiceProvider.GetService<IDBInitializer>();

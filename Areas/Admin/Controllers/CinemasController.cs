@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Cinema.Areas.Admin.Controllers
 {
     [Area(SD.AdminArea)]
-
+    [Authorize(Roles = $"{SD.SuperAdminRole},{SD.AdminRole}")]
     public class CinemasController : Controller
     {
         //private ApplicationDbContext _context = new();

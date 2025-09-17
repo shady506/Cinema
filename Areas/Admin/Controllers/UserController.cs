@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cinema.Areas.Admin.Controllers
 {
     [Area(SD.AdminArea)]
+    [Authorize(Roles = $"{SD.SuperAdminRole},{SD.AdminRole}")]
     public class UserController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

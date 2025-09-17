@@ -1,5 +1,6 @@
 ﻿using Cinema.Models;
 using Cinema.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 namespace Cinema.Areas.Admin.Controllers
 {
     [Area(SD.AdminArea)]
+    [Authorize(Roles = $"{SD.SuperAdminRole},{SD.AdminRole}")]
     public class MoviesController : Controller
     {
         //private ApplicationDbContext _context = new();
