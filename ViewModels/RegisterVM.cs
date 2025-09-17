@@ -16,6 +16,9 @@ namespace Cinema.ViewModels
         public string Password{ get; set; } = string .Empty ;
         [Required, DataType(DataType.Password) , Compare(nameof(Password))]
         public string ConfirmPassword { get; set; } = string.Empty;
-        public string? Address{ get; set; }
+        public string? Streat { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? ZipCode { get; set; }
     }
 }

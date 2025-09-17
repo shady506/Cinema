@@ -47,7 +47,10 @@ namespace Cinema.Areas.Identity.Controllers
             {
                 Name = registerVM.Name,
                 Email = registerVM.Email,
-                Address = registerVM.Address,
+                City = registerVM.City,
+                Streat= registerVM.Streat ,
+                State = registerVM.State,
+                ZipCode= registerVM.ZipCode,
                 UserName = registerVM.UserName
             };
             //ApplicationUser applicationUser = registerVM.Adapt<ApplicationUser>();
