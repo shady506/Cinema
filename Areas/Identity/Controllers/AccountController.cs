@@ -152,6 +152,13 @@ namespace Cinema.Areas.Identity.Controllers
                 return View(loginVM);
 
             }
+
+            if (!user.LockoutEnabled)
+            {
+                TempData["error-Notification"] = $"You Have Locked Till {user.LockoutEnd}";
+                return View(loginVM);
+
+            }
             TempData["success-Notification"] = "Login Successfully ";
 
             return RedirectToAction("Index", "Home", new { area = "Customer" });

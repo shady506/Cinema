@@ -52,15 +52,15 @@
 
                                @if (!item.LockoutEnabled)
                                 {
-                                    <a href=""
-                                       class="btn btn-primary"
-                                    data-id="@item.Id">UnLock</a>
+                                    <a href="/Admin/User/LockUnlock/@item.Id"
+                                       class="btn btn-primary btn-delete"
+                                       data-id="@item.Id">UnLock</a>
                                 }
                                 else
                                 {
 
-                                    <a href=""
-                                       class="btn btn-danger "
+                                    <a href="/Admin/User/LockUnlock/@item.Id"
+                                       class="btn btn-danger btn-delete"
                                        data-id="@item.Id">Lock</a>
                                                                 }
                             </td>
@@ -73,7 +73,7 @@
     </div>
 </div>
 
-<script>
+@* <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".btn-delete").forEach(button => {
             button.addEventListener("click", function (e) {
@@ -108,7 +108,7 @@
             });
         });
     });
-</script>
+</script> *@
 
 @* @section Scripts { *@
 @*     <partial name="_NotifactionPartial" /> *@

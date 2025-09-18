@@ -17,5 +17,13 @@ namespace Cinema.ViewModels
         public string? City { get; set; }
         public string? State { get; set; }
         public string? ZipCode { get; set; }
+
+        public IFormFile? ProfileImage { get; set; } 
+        public string? ProfilePicture { get; set; } 
+
+
+        public string? CurrentPassword { get; set; } 
+        public string? NewPassword { get; set; } 
+        public string? ConfirmPassword { get; set; } 
     }
 }

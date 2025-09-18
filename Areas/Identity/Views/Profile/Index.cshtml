@@ -1,95 +1,107 @@
 ﻿@model UpdatePersonalinfoVM
 
+<div class="container my-4">
+    <div class="row">
 
-<div class="container my-3">
-	<div class="row gutters">
-		<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-			<div class="card h-100">
-				<div class="card-body">
-					<div class="account-settings">
-						<div class="user-profile">
-							<div class="user-avatar">
-								<img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
-							</div>
-							<h5 class="user-name">@Model.Name</h5>
-							<h6 class="user-email">@Model.Email</h6>
-						</div>
-						<div class="about">
-							<h5>About</h5>
-							<p>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and human experiences.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-			<div class="card h-100">
-				<div class="card-body">
-				<form asp-action="UpdateInfo" method="post">
-					<input type="hidden" name="Id" value="@Model.Id" />
-						<div class="row gutters">
-							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-								<h6 class="mb-2 text-primary">Personal Details</h6>
-							</div>
-							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-								<div class="form-group">
-									<label for="fullName">Full Name</label>
-									<input type="text" class="form-control" id="fullName" placeholder="Enter full name" value="@Model.Name" name="Name">
-								</div>
-							</div>
-							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-								<div class="form-group">
-									<label for="eMail">Email</label>
-									<input type="email" class="form-control" id="eMail" placeholder="Enter email ID" value="@Model.Email" name="Email">
-								</div>
-							</div>
-							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-								<div class="form-group">
-									<label for="phone">Phone</label>
-									<input type="text" class="form-control" id="phone" placeholder="Enter phone number" value="@Model.PhoneNumber" name="PhoneNumber">
-								</div>
-							</div>
-						</div>
-						<div class="row gutters">
-							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-								<h6 class="mt-3 mb-2 text-primary">Address</h6>
-							</div>
-							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-								<div class="form-group">
-									<label for="Street">Street</label>
-									<input type="name" class="form-control" id="Street" placeholder="Enter Street" value="@Model.Streat" name="Streat">
-								</div>
-							</div>
-							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-								<div class="form-group">
-									<label for="ciTy">City</label>
-									<input type="name" class="form-control" id="ciTy" placeholder="Enter City" value="@Model.City" name="City">
-								</div>
-							</div>
-							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-								<div class="form-group">
-									<label for="sTate">State</label>
-									<input type="text" class="form-control" id="sTate" placeholder="Enter State" value="@Model.State" name="State">
-								</div>
-							</div>
-							<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-								<div class="form-group">
-									<label for="zIp">Zip Code</label>
-									<input type="text" class="form-control" id="zIp" placeholder="Zip Code" value="@Model.ZipCode" name="ZipCode">
-								</div>
-							</div>
-						</div>
-						<div class="row gutters mt-3">
-							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-								<div class="text-right">
-									<button type="reset" id="submit" name="submit" class="btn btn-secondary">Cancel</button>
-									<button type="submit" id="submit" name="submit" class="btn btn-primary">Update</button>
-								</div>
-							</div>
-						</div>
-				</form>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="col-md-4 text-center">
+            <div class="card shadow-sm p-3">
+                <img src="@Url.Content(Model.ProfilePicture ?? "/images/Default-Avatar.jpeg")"
+                     alt="Profile Picture"
+                     class="img-thumbnail rounded-circle"
+                     style="width:200px; height:200px " />
+                <h5>@Model.Name</h5>
+                <p class="text-muted">@Model.Email</p>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <form asp-action="UpdateInfo" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+
+                    <h5 class="mb-3 text-primary">Personal Info</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="PhoneNumber" class="form-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ProfileImage" class="form-label">Profile Picture</label>
+                            <input asp-for="ProfileImage" type="file" class="form-control" />
+                        </div>
+                    </div>
+
+                    <h5 class="mt-4 mb-3 text-primary">Address</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Streat" class="form-label"></label>
+                            <input asp-for="Streat" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="City" class="form-label"></label>
+                            <input asp-for="City" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="State" class="form-label"></label>
+                            <input asp-for="State" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ZipCode" class="form-label"></label>
+                            <input asp-for="ZipCode" class="form-control" />
+                        </div>
+                    </div>
+
+    
+                    <div class="accordion mt-4" id="passwordAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingPassword">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePassword" aria-expanded="false" aria-controls="collapsePassword">
+                                    Change Password (Optional)
+                                </button>
+                            </h2>
+                            <div id="collapsePassword" class="accordion-collapse collapse" aria-labelledby="headingPassword" data-bs-parent="#passwordAccordion">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="CurrentPassword" class="form-label"></label>
+                                            <input asp-for="CurrentPassword" type="password" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="NewPassword" class="form-label"></label>
+                                            <input asp-for="NewPassword" type="password" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                                            <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- الأزرار -->
+                    <div class="mt-4 text-end">
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

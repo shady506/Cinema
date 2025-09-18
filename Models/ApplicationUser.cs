@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Cinema.Models
 {
@@ -12,5 +13,9 @@ namespace Cinema.Models
         public string? City { get; set; }
         public string? State{ get; set; }
         public string? ZipCode { get; set; }
+        public string? ProfilePicture { get; set; } 
+
+        [NotMapped] 
+        public IFormFile? ProfileImage { get; set; }
     }
 }
