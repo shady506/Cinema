@@ -1,4 +1,4 @@
-using Cinema.Utility.DBInitializer;
+﻿using Cinema.Utility.DBInitializer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.CodeAnalysis.Options;

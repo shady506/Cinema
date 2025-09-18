@@ -33,6 +33,9 @@ namespace Cinema.Models
         public Cinemas? Cinema { get; set; }
         public Categories? Category { get; set; }
         public List<Actors>? Actors { get; set; }
-    
+
+        public ICollection<ShowTime> ShowTimes { get; set; } = new List<ShowTime>();
+        public ICollection<Seat> Seats { get; set; } = new List<Seat>();
+
     }
 }

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Cinema.ViewModels.CartItemViewModel>
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">🛒 My Cart</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            Your cart is empty.
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-sm ms-2">Browse Movies</a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Movie</th>
+                        <th>Show Time</th>
+                        <th>Seat</th>
+                        <th>Price</th>
+                        <th style="width: 120px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.MovieTitle</td>
+                            <td>@item.ShowDate.ToString("f")</td>
+                            <td>@item.SeatNumber</td>
+                            <td>@item.Price.ToString("C")</td>
+                            <td>
+                                <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                    <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i> Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end mt-3">
+            <form asp-action="Checkout" method="post">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <i class="bi bi-credit-card"></i> Checkout
+                </button>
+            </form>
+        </div>
+    }
+</div>

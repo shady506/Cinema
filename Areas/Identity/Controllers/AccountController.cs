@@ -48,7 +48,7 @@ namespace Cinema.Areas.Identity.Controllers
                 Name = registerVM.Name,
                 Email = registerVM.Email,
                 City = registerVM.City,
-                Streat= registerVM.Streat ,
+                Street= registerVM.Streat ,
                 State = registerVM.State,
                 ZipCode= registerVM.ZipCode,
                 UserName = registerVM.UserName

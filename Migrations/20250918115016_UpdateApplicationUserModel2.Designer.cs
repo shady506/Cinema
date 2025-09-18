@@ -4,6 +4,7 @@ using Cinema.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinema.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250918115016_UpdateApplicationUserModel2")]
+    partial class UpdateApplicationUserModel2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,8 +177,10 @@ namespace Cinema.Migrations
                     b.Property<int>("ShowTimeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -184,7 +189,7 @@ namespace Cinema.Migrations
 
                     b.HasIndex("ShowTimeId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("bookings");
                 });
@@ -206,8 +211,10 @@ namespace Cinema.Migrations
                     b.Property<int>("ShowTimeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -216,7 +223,7 @@ namespace Cinema.Migrations
 
                     b.HasIndex("ShowTimeId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("cartItems");
                 });
@@ -333,9 +340,6 @@ namespace Cinema.Migrations
                     b.Property<bool>("IsBooked")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SeatNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -345,413 +349,9 @@ namespace Cinema.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
-
                     b.HasIndex("ShowTimeId");
 
                     b.ToTable("seats");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A1",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A2",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A3",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A4",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A5",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 6,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A6",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 7,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A7",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 8,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A8",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 9,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A9",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 10,
-                            IsBooked = false,
-                            MovieId = 1,
-                            SeatNumber = "A10",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 11,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A1",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 12,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A2",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 13,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A3",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 14,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A4",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 15,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A5",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 16,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A6",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 17,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A7",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 18,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A8",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 19,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A9",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 20,
-                            IsBooked = false,
-                            MovieId = 2,
-                            SeatNumber = "A10",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 21,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A1",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 22,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A2",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 23,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A3",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 24,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A4",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 25,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A5",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 26,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A6",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 27,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A7",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 28,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A8",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 29,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A9",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 30,
-                            IsBooked = false,
-                            MovieId = 3,
-                            SeatNumber = "A10",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 31,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A1",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 32,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A2",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 33,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A3",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 34,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A4",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 35,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A5",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 36,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A6",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 37,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A7",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 38,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A8",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 39,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A9",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 40,
-                            IsBooked = false,
-                            MovieId = 4,
-                            SeatNumber = "A10",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 41,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A1",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 42,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A2",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 43,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A3",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 44,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A4",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 45,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A5",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 46,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A6",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 47,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A7",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 48,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A8",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 49,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A9",
-                            ShowTimeId = 0
-                        },
-                        new
-                        {
-                            Id = 50,
-                            IsBooked = false,
-                            MovieId = 5,
-                            SeatNumber = "A10",
-                            ShowTimeId = 0
-                        });
                 });
 
             modelBuilder.Entity("Cinema.Models.ShowTime", b =>
@@ -764,9 +364,6 @@ namespace Cinema.Migrations
 
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
@@ -942,9 +539,7 @@ namespace Cinema.Migrations
 
                     b.HasOne("Cinema.Models.ApplicationUser", "User")
                         .WithMany("Bookings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Seat");
 
@@ -969,9 +564,7 @@ namespace Cinema.Migrations
 
                     b.HasOne("Cinema.Models.ApplicationUser", "User")
                         .WithMany("CartItems")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Seat");
 
@@ -1001,19 +594,11 @@ namespace Cinema.Migrations
 
             modelBuilder.Entity("Cinema.Models.Seat", b =>
                 {
-                    b.HasOne("Cinema.Models.Movies", "Movie")
-                        .WithMany("Seats")
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Cinema.Models.ShowTime", "ShowTime")
                         .WithMany("Seats")
                         .HasForeignKey("ShowTimeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Movie");
 
                     b.Navigation("ShowTime");
                 });
@@ -1099,8 +684,6 @@ namespace Cinema.Migrations
 
             modelBuilder.Entity("Cinema.Models.Movies", b =>
                 {
-                    b.Navigation("Seats");
-
                     b.Navigation("ShowTimes");
                 });
 

@@ -66,9 +66,17 @@
 
                         <!-- Buttons -->
                         <div class="mt-auto d-flex gap-2">
-                            <button class="btn btn-primary flex-fill">🎟 Book Ticket</button>
-                            <a href="/Customer/Home/details/@item.Id"><button class="btn btn-outline-secondary flex-fill href">More Details</button></a>
+                            <form asp-area="Customer" asp-controller="Ticket" asp-action="AddToCart" method="post" class="flex-fill">
+                                <input type="hidden" name="showTimeId" value="@item.Id" />
+                               
+                                <button type="submit" class="btn btn-primary w-100">🎟 Book Ticket</button>
+                            </form>
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-id="@item.Id"
+                               class="btn btn-outline-secondary flex-fill">
+                                More Details
+                            </a>
                         </div>
+
                     </div>
                 </div>
             </div>

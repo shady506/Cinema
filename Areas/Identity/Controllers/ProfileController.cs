@@ -40,7 +40,7 @@ namespace Cinema.Areas.Identity.Controllers
             user.Name = model.Name;
             user.Email = model.Email;
             user.PhoneNumber = model.PhoneNumber;
-            user.Streat = model.Streat;
+            user.Street = model.Streat;
             user.City = model.City;
             user.State = model.State;
             user.ZipCode = model.ZipCode;
