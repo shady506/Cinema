@@ -1,0 +1,58 @@
+﻿@model Actors
+
+<div class="container mt-5">
+    <div class="row">
+     
+        <div class="col-md-4 text-center">
+            <img src="~/images/cast/@Model.ProfilePicture"
+                 class="rounded-circle shadow-lg"
+                 alt="@Model.FirstName @Model.LastName"
+                 style="width:250px; height:250px; object-fit:cover;">
+            <h3 class="mt-3">@Model.FirstName @Model.LastName</h3>
+        </div>
+
+        <div class="col-md-8">
+            <h4>👤 About</h4>
+            <p style="font-size: 1.1rem; line-height:1.6;">
+                @Model.Bio
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <h4>🎬 Movies by @Model.FirstName</h4>
+    </div>
+
+    @if (ViewBag.RelatedMovies != null && ViewBag.RelatedMovies.Count > 0)
+    {
+        @foreach (var item in ViewBag.RelatedMovies)
+        {
+            <div class="col-md-3 col-sm-4 col-6 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="text-decoration-none text-dark">
+                        <img src="~/images/movies/@item.ImgUrl"
+                             class="card-img-top"
+                             alt="@item.Name"
+                             style="height:250px; object-fit:cover; border-top-left-radius: .5rem; border-top-right-radius: .5rem;">
+                        <div class="card-body text-center">
+                            <h6 class="fw-bold text-truncate">@item.Name</h6>
+                            <p class="text-muted small mb-0"> @item.Category?.Name</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <p class="text-muted">No movies found for this actor.</p>
+        </div>
+    }
+</div>
+
+
+    

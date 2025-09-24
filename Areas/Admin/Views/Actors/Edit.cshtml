@@ -1,0 +1,64 @@
+﻿@model Actors
+
+
+<div class="container">
+    <div class="row my-3">
+        <div class="col-12">
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="FirstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="FirstName" name="FirstName" value="@Model.FirstName">
+                    <span class="text-danger" asp-validation-for="@Model.FirstName"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="LastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="LastName" name="LastName" value="@Model.LastName">
+                    <span class="text-danger" asp-validation-for="@Model.LastName"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Bio" class="form-label">Bio</label>
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a Bio here" id="description" style="height: 100px" name="Description">@Model.Bio</textarea>
+                        <label for="description">You Bio Here...</label>
+                    </div>
+                    <span class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="ProfilePicture" class="form-label">Profile Picture</label>
+                    <input type="file" class="form-control" id="ProfilePicture" name="ProfilePicture" accept="image/*" onchange="previewImage(event)">
+
+                    <!-- Show existing image if available -->
+                    <img id="preview"
+                         src="~/Images/@Model.ProfilePicture"
+                         alt="Image Preview"
+                         class="img-thumbnail mt-2"
+                         style="max-width: 200px; @(string.IsNullOrEmpty(Model.ProfilePicture) ? "display:none;" : "")" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const preview = document.getElementById("preview");
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+@section Scripts
+{
+    <partial name="_NotificationPartial.cshtml" />
+}

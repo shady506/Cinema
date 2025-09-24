@@ -1,0 +1,21 @@
+﻿@model Categories
+
+<div class="container">
+    <div class="row my-3">
+        <div class="col-12">
+            <form method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" asp-for="Name">
+                    <span class="text-danger" asp-validation-for="@Model.Name"></span>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <partial name="_NotificationPartial.cshtml" />
+    <partial name="_ValidationScriptsPartial.cshtml" />
+}

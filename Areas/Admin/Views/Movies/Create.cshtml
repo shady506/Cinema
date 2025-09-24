@@ -1,0 +1,78 @@
+﻿@model CategoriesWithCinemasVM
+
+
+<div class="container">
+    <div class="row my-3">
+        <div class="col-12">
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input asp-for="Movie.Name" class="form-control" />
+                    <span asp-validation-for="Movie.Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <div class="form-floating">
+                        <textarea asp-for="Movie.Description" class="form-control"></textarea>
+                        <span asp-validation-for="Movie.Description" class="text-danger"></span>
+                        <label for="description">You Description Here...</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="ImgUrl" class="form-label">Movie Image</label>
+                    <input type="file" class="form-control" id="ImgUrl" name="ImgUrl" accept="image/*" onchange="previewImage(event)">
+                    <img id="preview"
+                         src="@(Model.Movie?.ImgUrl != null ? Url.Content("~/images/movies/" + Model.Movie.ImgUrl) : "#")"
+                         alt="Image Preview"
+                         class="img-thumbnail mt-2"
+                         style="max-width: 200px; @(Model.Movie?.ImgUrl != null ? "" : "display:none;")" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="Price" class="form-label">Price</label>
+                    <input asp-for="Movie.Price" class="form-control" />
+                    <span asp-validation-for="Movie.Price" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Price" class="form-label">StartDate</label>
+                    <input asp-for="Movie.StartDate" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="Movie.StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Price" class="form-label">EndDate</label>
+                    <input asp-for="Movie.EndDate" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="Movie.EndDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="CategoryId" class="form-label">Category Name</label>
+                    <select asp-for="Movie.CategoryId" class="form-select" asp-items="@(new SelectList(Model.Categories, "Id", "Name"))"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="CinemaId" class="form-label">Cineama Name</label>
+                    <select asp-for="Movie.CinemaId" class="form-select" asp-items="@(new SelectList(Model.Cinemas, "Id", "Name"))"></select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function previewImage(event) {
+        var preview = document.getElementById('preview');
+        preview.src = URL.createObjectURL(event.target.files[0]);
+        preview.style.display = "block";
+    }
+</script>
+
+@section Scripts
+{
+    <partial name="_NotificationPartial.cshtml" />
+    <partial name="_ValidationScriptsPartial.cshtml" />
+}

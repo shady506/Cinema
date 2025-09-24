@@ -1,0 +1,107 @@
+﻿@model UpdatePersonalinfoVM
+
+<div class="container my-4">
+    <div class="row">
+
+        <div class="col-md-4 text-center">
+            <div class="card shadow-sm p-3">
+                <img src="@Url.Content(Model.ProfilePicture ?? "/images/Default-Avatar.jpeg")"
+                     alt="Profile Picture"
+                     class="img-thumbnail rounded-circle"
+                     style="width:200px; height:200px " />
+                <h5>@Model.Name</h5>
+                <p class="text-muted">@Model.Email</p>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <form asp-action="UpdateInfo" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+
+                    <h5 class="mb-3 text-primary">Personal Info</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="PhoneNumber" class="form-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ProfileImage" class="form-label">Profile Picture</label>
+                            <input asp-for="ProfileImage" type="file" class="form-control" />
+                        </div>
+                    </div>
+
+                    <h5 class="mt-4 mb-3 text-primary">Address</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Streat" class="form-label"></label>
+                            <input asp-for="Streat" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="City" class="form-label"></label>
+                            <input asp-for="City" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="State" class="form-label"></label>
+                            <input asp-for="State" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ZipCode" class="form-label"></label>
+                            <input asp-for="ZipCode" class="form-control" />
+                        </div>
+                    </div>
+
+    
+                    <div class="accordion mt-4" id="passwordAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingPassword">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePassword" aria-expanded="false" aria-controls="collapsePassword">
+                                    Change Password (Optional)
+                                </button>
+                            </h2>
+                            <div id="collapsePassword" class="accordion-collapse collapse" aria-labelledby="headingPassword" data-bs-parent="#passwordAccordion">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="CurrentPassword" class="form-label"></label>
+                                            <input asp-for="CurrentPassword" type="password" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="NewPassword" class="form-label"></label>
+                                            <input asp-for="NewPassword" type="password" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                                            <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- الأزرار -->
+                    <div class="mt-4 text-end">
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

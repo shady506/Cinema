@@ -1,0 +1,38 @@
+﻿@model Cinemas
+
+
+<div class="container">
+    <div class="row my-3">
+        <div class="col-12">
+            <form method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="Name" class="form-label">Name</label>
+                    <input  class="form-control" asp-for="Name">
+                    <span class="text-danger" asp-validation-for="@Model.Name"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Description" class="form-label">Description</label>
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a Description here" id="Description" style="height: 100px" name="Description"></textarea>
+                        <label for="Description">You Description Here...</label>
+                    </div>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="Address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="Address" name="Address">
+                    <span class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <partial name="_NotificationPartial.cshtml" />
+    <partial name="_ValidationScriptsPartial.cshtml" />
+
+
+}
