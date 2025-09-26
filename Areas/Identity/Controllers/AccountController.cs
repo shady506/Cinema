@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Cinema.Areas.Identity.Controllers
@@ -344,6 +345,84 @@ namespace Cinema.Areas.Identity.Controllers
            await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account", new { area = "Identity" });
 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+        [HttpGet]
+
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                return RedirectToAction(nameof(Login));
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            // Try signing in with an external login
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            if (signInResult.Succeeded)
+            {
+                return LocalRedirect(returnUrl ?? "/");
+            }
+
+            // If the user cannot log in, try finding them by email
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+            if (email != null)
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    Random rand = new Random();
+                    string r = rand.Next(1000, 9999).ToString();
+                    // Create a new user if they do not exist
+                    user = new ApplicationUser
+                    {
+                        UserName = $"{name.Replace(" ", "")}{r}",
+                        Email = email,
+                        Name = name
+                    };
+                    var createUserResult = await _userManager.CreateAsync(user);
+                    if (!createUserResult.Succeeded)
+                    {
+                        ModelState.AddModelError(string.Empty, "Error creating user.");
+                        return RedirectToAction(nameof(Login));
+                    }
+                }
+
+                // Ensure the external login is linked
+                var existingLogins = await _userManager.GetLoginsAsync(user);
+                var hasGoogleLogin = existingLogins.Any(l => l.LoginProvider == info.LoginProvider);
+
+                if (!hasGoogleLogin)
+                {
+                    var addLoginResult = await _userManager.AddLoginAsync(user, info);
+                    if (!addLoginResult.Succeeded)
+                    {
+                        ModelState.AddModelError(string.Empty, "Error linking external login.");
+                        return RedirectToAction(nameof(Login));
+                    }
+                }
+
+                // Sign in the user
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return LocalRedirect(returnUrl ?? "/");
+            }
+
+            return RedirectToAction(nameof(Login));
         }
     }
 }

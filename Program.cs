@@ -30,13 +30,28 @@ namespace Cinema
                 .AddEntityFrameworkStores <ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.AddAuthentication()
+             .AddGoogle("google", opt =>
+             {
+                 var googleAuth = builder.Configuration.GetSection("Authentication:Google");
+                 opt.ClientId = googleAuth["ClientId"]??" ";
+                 opt.ClientSecret = googleAuth["ClientSecret"]?? " ";
+                 opt.SignInScheme = IdentityConstants.ExternalScheme;
+             });
+
             builder.Services.ConfigureApplicationCookie(option => 
             {
                 option.LoginPath = "/Identity/Account/Login";
                 option.AccessDeniedPath = "/Customer/Home/NotFoundPage";
             });
-             
 
+            var configuration = builder.Configuration;
+
+            builder.Services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = builder.Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+            });
             builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             builder.Services.AddScoped<IMovieRepository, MovieRepository>();
